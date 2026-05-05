@@ -1,5 +1,21 @@
-Smart Subscription Management System | React, Node.js, Express, MySQL 
--Built a full-stack application to track and manage user subscriptions, featuring a dynamic dashboard. 
--Developed RESTful APIs using Node.js and Express to handle CRUD operations for data storing. 
--Integrated a React (Vite) frontend with a MySQL backend, ensuring seamless data flow. 
--Utilized npm for package management and Postman for rigorous API testing and managment documentation. 
+Smart Sub Hub
+
+A full-stack subscription management system that helps users track, analyze, and control all their recurring subscriptions in one place.
+
+# Features
+- Add and manage subscriptions
+- View monthly/yearly spending breakdown
+- Analytics dashboard
+- Clean responsive UI
+
+# Tech Stack
+- TypeScript
+- HTML / CSS / JavaScript
+- (add backend if you have one)
+
+# Purpose
+Built to solve the problem of forgotten subscriptions and uncontrolled recurring expenses.
+
+## 📦 Setup
+npm install  
+npm run dev
