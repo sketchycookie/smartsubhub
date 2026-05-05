@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Subscription Hub - Project Showcase</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #f8fafc 0%, #f0f9ff 100%);
+            color: #0f172a;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Header */
+        header {
+            text-align: center;
+            margin-bottom: 4rem;
+            padding: 3rem 0;
+        }
+
+        .logo {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #1e3a8a 0%, #0891b2 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 24px;
+            margin: 0 auto 1rem;
+        }
+
+        h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            font-size: 1.25rem;
+            color: #64748b;
+            margin-bottom: 2rem;
+        }
+
+        /* Navigation Tabs */
+        .tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 1rem;
+        }
+
+        .tab-btn {
+            padding: 0.75rem 1.5rem;
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            color: #64748b;
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+            color: white;
+            border-color: #1e3a8a;
+        }
+
+        .tab-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(30, 58, 138, 0.15);
+        }
+
+        /* Tab Content */
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Cards Grid */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            border: 1px solid #e2e8f0;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(30, 58, 138, 0.12);
+        }
+
+        .card-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, #1e3a8a 0%, #0891b2 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-bottom: 1rem;
+        }
+
+        .card h3 {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+            color: #0f172a;
+        }
+
+        .card p {
+            color: #64748b;
+            font-size: 0.95rem;
+        }
+
+        /* Features Section */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .feature-item {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border-left: 4px solid #1e3a8a;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .feature-item h4 {
+            color: #1e3a8a;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .feature-item p {
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+
+        /* Stats Section */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .stat-box {
+            background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(30, 58, 138, 0.2);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 0.95rem;
+            opacity: 0.9;
+        }
+
+        /* Chart Container */
+        .chart-container {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            margin-bottom: 2rem;
+            position: relative;
+            height: 400px;
+        }
+
+        .chart-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: #0f172a;
+        }
+
+        /* Code Section */
+        .code-section {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 2rem;
+            border-radius: 12px;
+            overflow-x: auto;
+            margin-bottom: 2rem;
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .code-section h3 {
+            color: #06b6d4;
+            margin-bottom: 1rem;
+        }
+
+        /* Pages Grid */
+        .pages-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .page-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            border: 1px solid #e2e8f0;
+        }
+
+        .page-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(30, 58, 138, 0.12);
+        }
+
+        .page-header {
+            background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+            color: white;
+            padding: 1.5rem;
+        }
+
+        .page-header h4 {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-content {
+            padding: 1.5rem;
+        }
+
+        .page-content ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .page-content li {
+            padding: 0.5rem 0;
+            color: #64748b;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .page-content li:last-child {
+            border-bottom: none;
+        }
+
+        .page-content li:before {
+            content: "✓";
+            color: #0891b2;
+            font-weight: bold;
+        }
+
+        /* Tech Stack */
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .tech-badge {
+            background: white;
+            border: 2px solid #e2e8f0;
+            padding: 0.75rem 1.5rem;
+            border-radius: 20px;
+            font-weight: 600;
+            color: #1e3a8a;
+            transition: all 0.3s ease;
+        }
+
+        .tech-badge:hover {
+            background: #1e3a8a;
+            color: white;
+            border-color: #1e3a8a;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            background: linear-gradient(135deg, #1e3a8a 0%, #0891b2 100%);
+            color: white;
+            padding: 3rem;
+            border-radius: 12px;
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .cta-section h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .cta-section p {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            opacity: 0.95;
+        }
+
+        .cta-button {
+            background: white;
+            color: #1e3a8a;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+
+        .cta-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Footer */
+        footer {
+            background: white;
+            border-top: 1px solid #e2e8f0;
+            padding: 2rem;
+            text-align: center;
+            color: #64748b;
+            margin-top: 4rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            .container {
+                padding: 1rem;
+            }
+
+            .tabs {
+                gap: 0.5rem;
+            }
+
+            .tab-btn {
+                padding: 0.5rem 1rem;
+                font-size: 0.9rem;
+            }
+
+            .chart-container {
+                height: 300px;
+            }
+
+            .cta-section {
+                padding: 2rem;
+            }
+
+            .cta-section h2 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <div class="logo">SH</div>
+            <h1>Smart Subscription Hub</h1>
+            <p class="subtitle">Professional subscription management platform built with React + Node.js</p>
+        </header>
+
+        <!-- Navigation Tabs -->
+        <div class="tabs">
+            <button class="tab-btn active" onclick="showTab('overview')">Overview</button>
+            <button class="tab-btn" onclick="showTab('features')">Features</button>
+            <button class="tab-btn" onclick="showTab('pages')">Pages</button>
+            <button class="tab-btn" onclick="showTab('analytics')">Analytics</button>
+            <button class="tab-btn" onclick="showTab('tech')">Tech Stack</button>
+        </div>
+
+        <!-- Tab: Overview -->
+        <div id="overview" class="tab-content active">
+            <div class="cards-grid">
+                <div class="card">
+                    <div class="card-icon">📊</div>
+                    <h3>Dashboard</h3>
+                    <p>Comprehensive dashboard with real-time subscription tracking and spending overview</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">💰</div>
+                    <h3>Savings Tracker</h3>
+                    <p>Monitor monthly spending with detailed analytics and savings opportunities</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">📅</div>
+                    <h3>Renewal Calendar</h3>
+                    <p>Never miss a renewal date with automated calendar and notifications</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">🏷️</div>
+                    <h3>Categories</h3>
+                    <p>Organize subscriptions by type for better management and insights</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">⭐</div>
+                    <h3>Recommendations</h3>
+                    <p>Personalized suggestions based on usage patterns and available discounts</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">🔍</div>
+                    <h3>Explore</h3>
+                    <p>Discover new subscriptions with trending deals and user ratings</p>
+                </div>
+            </div>
+
+            <div class="stats">
+                <div class="stat-box">
+                    <div class="stat-number">6</div>
+                    <div class="stat-label">Active Subscriptions</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number">$233.95</div>
+                    <div class="stat-label">Monthly Cost</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number">$156</div>
+                    <div class="stat-label">Potential Savings</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number">87%</div>
+                    <div class="stat-label">Usage Score</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab: Features -->
+        <div id="features" class="tab-content">
+            <div class="features">
+                <div class="feature-item">
+                    <h4>✓ Smart Tracking</h4>
+                    <p>Keep all subscriptions in one place with automatic renewal reminders and notifications</p>
+                </div>
+                <div class="feature-item">
+                    <h4>✓ Savings Insights</h4>
+                    <p>Discover how much you're spending and find opportunities to save money</p>
+                </div>
+                <div class="feature-item">
+                    <h4>✓ Personalized Recommendations</h4>
+                    <p>Get suggestions based on your usage patterns and available discounts</p>
+                </div>
+                <div class="feature-item">
+                    <h4>✓ Detailed Analytics</h4>
+                    <p>Understand spending trends with charts, graphs, and detailed insights</p>
+                </div>
+                <div class="feature-item">
+                    <h4>✓ Category Management</h4>
+                    <p>Organize subscriptions by type for better tracking and analysis</p>
+                </div>
+                <div class="feature-item">
+                    <h4>✓ Responsive Design</h4>
+                    <p>Beautiful, modern UI that works seamlessly on desktop, tablet, and mobile</p>
+                </div>
+                <div class="feature-item">
+                    <h4>✓ Professional UI</h4>
+                    <p>Zepto-inspired design with soft shadows, rounded components, and smooth transitions</p>
+                </div>
+                <div class="feature-item">
+                    <h4>✓ Search & Filter</h4>
+                    <p>Quickly find subscriptions with powerful search and category filtering</p>
+                </div>
+                <div class="feature-item">
+                    <h4>✓ Export Reports</h4>
+                    <p>Generate and export subscription reports for record-keeping</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab: Pages -->
+        <div id="pages" class="tab-content">
+            <div class="pages-grid">
+                <div class="page-card">
+                    <div class="page-header">
+                        <h4>Authentication</h4>
+                        <p>Secure login & signup</p>
+                    </div>
+                    <div class="page-content">
+                        <ul>
+                            <li>Signup page with validation</li>
+                            <li>Login with remember me</li>
+                            <li>Social auth buttons</li>
+                            <li>Password visibility toggle</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="page-card">
+                    <div class="page-header">
+                        <h4>Dashboard Home</h4>
+                        <p>Main overview page</p>
+                    </div>
+                    <div class="page-content">
+                        <ul>
+                            <li>Spending overview cards</li>
+                            <li>Recent subscriptions</li>
+                            <li>Recommendations section</li>
+                            <li>Quick action buttons</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="page-card">
+                    <div class="page-header">
+                        <h4>My Subscriptions</h4>
+                        <p>Manage all subscriptions</p>
+                    </div>
+                    <div class="page-content">
+                        <ul>
+                            <li>Subscription cards with icons</li>
+                            <li>Search functionality</li>
+                            <li>Category filtering</li>
+                            <li>Edit/Delete actions</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="page-card">
+                    <div class="page-header">
+                        <h4>Renewal Calendar</h4>
+                        <p>Track upcoming renewals</p>
+                    </div>
+                    <div class="page-content">
+                        <ul>
+                            <li>Timeline view of renewals</li>
+                            <li>Urgent alerts for soon</li>
+                            <li>Cost summary cards</li>
+                            <li>Pro tips section</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="page-card">
+                    <div class="page-header">
+                        <h4>Savings Tracker</h4>
+                        <p>Spending analytics</p>
+                    </div>
+                    <div class="page-content">
+                        <ul>
+                            <li>Spending trend charts</li>
+                            <li>Category breakdown pie</li>
+                            <li>Monthly comparison</li>
+                            <li>Savings insights</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="page-card">
+                    <div class="page-header">
+                        <h4>Categories</h4>
+                        <p>Organize by type</p>
+                    </div>
+                    <div class="page-content">
+                        <ul>
+                            <li>Category cards with icons</li>
+                            <li>Spending percentage</li>
+                            <li>Item count per category</li>
+                            <li>Progress bars</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="page-card">
+                    <div class="page-header">
+                        <h4>Explore</h4>
+                        <p>Discover subscriptions</p>
+                    </div>
+                    <div class="page-content">
+                        <ul>
+                            <li>Recommendation cards</li>
+                            <li>Discount badges</li>
+                            <li>User ratings</li>
+                            <li>Search & filter</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="page-card">
+                    <div class="page-header">
+                        <h4>Analytics</h4>
+                        <p>Deep insights</p>
+                    </div>
+                    <div class="page-content">
+                        <ul>
+                            <li>Weekly spending chart</li>
+                            <li>Category distribution</li>
+                            <li>Usage insights table</li>
+                            <li>Recommendations</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="page-card">
+                    <div class="page-header">
+                        <h4>About & Contact</h4>
+                        <p>Info & support</p>
+                    </div>
+                    <div class="page-content">
+                        <ul>
+                            <li>Company mission</li>
+                            <li>Feature highlights</li>
+                            <li>Contact form</li>
+                            <li>FAQ section</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab: Analytics -->
+        <div id="analytics" class="tab-content">
+            <div class="chart-container">
+                <div class="chart-title">Monthly Spending Trend</div>
+                <canvas id="spendingChart"></canvas>
+            </div>
+
+            <div class="chart-container">
+                <div class="chart-title">Spending by Category</div>
+                <canvas id="categoryChart"></canvas>
+            </div>
+
+            <div class="chart-container">
+                <div class="chart-title">Subscription Status Distribution</div>
+                <canvas id="statusChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Tab: Tech Stack -->
+        <div id="tech" class="tab-content">
+            <h2 style="margin-bottom: 2rem; color: #0f172a;">Technology Stack</h2>
+
+            <h3 style="margin-bottom: 1rem; color: #1e3a8a;">Frontend</h3>
+            <div class="tech-stack">
+                <span class="tech-badge">React 19</span>
+                <span class="tech-badge">TypeScript</span>
+                <span class="tech-badge">Tailwind CSS 4</span>
+                <span class="tech-badge">Wouter Router</span>
+                <span class="tech-badge">shadcn/ui</span>
+                <span class="tech-badge">Lucide Icons</span>
+                <span class="tech-badge">Recharts</span>
+            </div>
+
+            <h3 style="margin-bottom: 1rem; color: #1e3a8a; margin-top: 2rem;">Backend</h3>
+            <div class="tech-stack">
+                <span class="tech-badge">Node.js</span>
+                <span class="tech-badge">Express.js</span>
+                <span class="tech-badge">Vite</span>
+            </div>
+
+            <h3 style="margin-bottom: 1rem; color: #1e3a8a; margin-top: 2rem;">Architecture</h3>
+            <div class="tech-stack">
+                <span class="tech-badge">Component-Based</span>
+                <span class="tech-badge">Responsive Design</span>
+                <span class="tech-badge">Mobile-First</span>
+                <span class="tech-badge">Accessible (A11y)</span>
+                <span class="tech-badge">Modern UI/UX</span>
+            </div>
+
+            <div class="code-section" style="margin-top: 2rem;">
+                <h3>Project Structure</h3>
+                <pre>smart-subscription-hub/
+├── client/
+│   ├── src/
+│   │   ├── components/
+│   │   │   ├── Navbar.tsx
+│   │   │   ├── Sidebar.tsx
+│   │   │   ├── DashboardLayout.tsx
+│   │   │   ├── SubscriptionCard.tsx
+│   │   │   └── RecommendationCard.tsx
+│   │   ├── pages/
+│   │   │   ├── auth/
+│   │   │   │   ├── Login.tsx
+│   │   │   │   └── Signup.tsx
+│   │   │   └── dashboard/
+│   │   │       ├── Home.tsx
+│   │   │       ├── Subscriptions.tsx
+│   │   │       ├── RenewalCalendar.tsx
+│   │   │       ├── SavingsTracker.tsx
+│   │   │       ├── Categories.tsx
+│   │   │       ├── Explore.tsx
+│   │   │       ├── Analytics.tsx
+│   │   │       ├── About.tsx
+│   │   │       └── Contact.tsx
+│   │   ├── App.tsx
+│   │   └── index.css
+│   └── index.html
+└── server/
+    └── index.ts</pre>
+            </div>
+        </div>
+
+        <!-- CTA Section -->
+        <div class="cta-section">
+            <h2>Ready to Manage Your Subscriptions?</h2>
+            <p>Start using Smart Subscription Hub today and take control of your digital subscriptions</p>
+            <button class="cta-button" onclick="alert('Navigate to /dashboard/home to start using the app!')">Get Started</button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 Smart Subscription Hub. All rights reserved.</p>
+        <p style="margin-top: 1rem; font-size: 0.9rem;">Built with React, Node.js, and modern web technologies</p>
+    </footer>
+
+    <script>
+        // Tab switching
+        function showTab(tabName) {
+            // Hide all tabs
+            const tabs = document.querySelectorAll('.tab-content');
+            tabs.forEach(tab => tab.classList.remove('active'));
+
+            // Remove active class from all buttons
+            const buttons = document.querySelectorAll('.tab-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+
+            // Show selected tab
+            document.getElementById(tabName).classList.add('active');
+
+            // Add active class to clicked button
+            event.target.classList.add('active');
+
+            // Redraw charts if analytics tab
+            if (tabName === 'analytics') {
+                setTimeout(() => {
+                    spendingChart.resize();
+                    categoryChart.resize();
+                    statusChart.resize();
+                }, 100);
+            }
+        }
+
+        // Chart data
+        const spendingData = {
+            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+            datasets: [
+                {
+                    label: 'Amount Spent',
+                    data: [42.5, 45.0, 47.99, 43.0, 48.5, 46.0],
+                    borderColor: '#1e3a8a',
+                    backgroundColor: 'rgba(30, 58, 138, 0.1)',
+                    borderWidth: 3,
+                    fill: true,
+                    tension: 0.4,
+                    pointRadius: 5,
+                    pointBackgroundColor: '#1e3a8a',
+                    pointBorderColor: '#fff',
+                    pointBorderWidth: 2,
+                }
+            ]
+        };
+
+        const categoryData = {
+            labels: ['Entertainment', 'Productivity', 'Music', 'Storage', 'Shopping'],
+            datasets: [{
+                data: [21.98, 64.98, 5.99, 1.99, 139.0],
+                backgroundColor: [
+                    '#1e3a8a',
+                    '#2563eb',
+                    '#0891b2',
+                    '#06b6d4',
+                    '#3b82f6',
+                ],
+                borderColor: '#fff',
+                borderWidth: 2,
+            }]
+        };
+
+        const statusData = {
+            labels: ['Active', 'Expiring Soon', 'Paused'],
+            datasets: [{
+                data: [5, 1, 0],
+                backgroundColor: [
+                    '#16a34a',
+                    '#eab308',
+                    '#94a3b8',
+                ],
+                borderColor: '#fff',
+                borderWidth: 2,
+            }]
+        };
+
+        // Initialize charts
+        const spendingCtx = document.getElementById('spendingChart').getContext('2d');
+        const spendingChart = new Chart(spendingCtx, {
+            type: 'line',
+            data: spendingData,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: true,
+                        labels: { color: '#64748b', font: { size: 12 } }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: { color: '#64748b' },
+                        grid: { color: '#e2e8f0' }
+                    },
+                    x: {
+                        ticks: { color: '#64748b' },
+                        grid: { color: '#e2e8f0' }
+                    }
+                }
+            }
+        });
+
+        const categoryCtx = document.getElementById('categoryChart').getContext('2d');
+        const categoryChart = new Chart(categoryCtx, {
+            type: 'doughnut',
+            data: categoryData,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: true,
+                        labels: { color: '#64748b', font: { size: 12 } }
+                    }
+                }
+            }
+        });
+
+        const statusCtx = document.getElementById('statusChart').getContext('2d');
+        const statusChart = new Chart(statusCtx, {
+            type: 'pie',
+            data: statusData,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: true,
+                        labels: { color: '#64748b', font: { size: 12 } }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
