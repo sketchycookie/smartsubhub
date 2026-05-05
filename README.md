@@ -16,6 +16,6 @@ A full-stack subscription management system that helps users track, analyze, and
 # Purpose
 Built to solve the problem of forgotten subscriptions and uncontrolled recurring expenses.
 
-## 📦 Setup
+# Setup
 npm install  
 npm run dev
