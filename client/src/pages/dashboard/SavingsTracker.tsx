@@ -12,11 +12,11 @@ export default function SavingsTracker() {
   ];
 
   const categorySpending = [
-    { name: "Entertainment", value: 21.98, color: "#1e3a8a" },
-    { name: "Productivity", value: 64.98, color: "#2563eb" },
-    { name: "Music", value: 5.99, color: "#0891b2" },
-    { name: "Storage", value: 1.99, color: "#06b6d4" },
-    { name: "Shopping", value: 139.0, color: "#3b82f6" },
+    { name: "Entertainment", value: 199, color: "#1e3a8a" },
+    { name: "Productivity", value: 3849, color: "#2563eb" },
+    { name: "Music", value: 119, color: "#0891b2" },
+    { name: "Storage", value: 130, color: "#06b6d4" },
+    { name: "Shopping", value: 1499, color: "#3b82f6" },
   ];
 
   const totalSpent = monthlyData.reduce((sum, m) => sum + m.spent, 0);
